@@ -60,13 +60,6 @@ function paginationOnEachSide(){
             paginationItems.after.slice(Math.max(paginationItems.after.length - toRemove, 1)).forEach(element => {
                 element.remove();
             });
-            if (!rightSidedDots) {
-                if (paginationItems.after.length > 4) {
-                    indFnd = $('.page-item').length - 2;
-                    // $(`<li class="page-item disabled" aria-disabled="true"><span class="page-link">${totalRecords}</span></li>`).insertAfter($('.page-item:eq(' + indFnd + ')'));
-                    // $(`<li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>`).insertAfter($('.page-item:eq(' + indFnd + ')'));
-                }
-            }
         }
     }
 }
