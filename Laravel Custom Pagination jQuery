@@ -1,0 +1,72 @@
+function paginationOnEachSide(){
+
+    paginationItems = {
+        before: [],
+        after: []
+    };
+    activeFound = false;
+    onEachSide = 3
+    leftSidedDots = false;
+    rightSidedDots = false;
+    if ($('.page-item').length > 8) {
+        $('.page-item').each(function() {
+
+            //If dots are found, don't remove
+            if ($(this).hasClass('disabled')) {
+                if (activeFound && $(this).hasClass('disabled')) {
+                    rightSidedDots = true;
+                } else if (!activeFound && $(this).hasClass('disabled')) {
+                    leftSidedDots = true;
+                }
+                return;
+            } else {
+                if (rightSidedDots) {
+                    //If right sided dots are shown then run this so that the right sided dots (...) are not removed 
+                    //Second Last element
+                    if ($(this).index() + 1 == $('.page-item').length - 1)
+                        return;
+                }
+            }
+
+            //If PREVIOUS button is found, don't remove
+            if ($(this).index() == 0) {
+                $(this).find('a').text('PREV')
+                return;
+            }
+            //If NEXT button is found, don't remove
+            if ($(this).index() + 1 == $('.page-item').length) {
+                $(this).find('a').text('NEXT')
+                return;
+            }
+
+            if ($(this).hasClass('active')) {
+                activeFound = true;
+            }
+            if (activeFound) {
+                if (!$(this).hasClass('active')) {
+                    paginationItems.after.push($(this));
+                }
+            } else
+                paginationItems.before.push($(this));
+        });
+        if (paginationItems.before.length / onEachSide > 1) {
+            toRemove = paginationItems.before.length - onEachSide;
+            paginationItems.before.slice(0, toRemove).forEach(element => {
+                element.remove();
+            });
+        }
+        if (paginationItems.after.length / onEachSide > 1) {
+            toRemove = paginationItems.after.length - onEachSide;
+            paginationItems.after.slice(Math.max(paginationItems.after.length - toRemove, 1)).forEach(element => {
+                element.remove();
+            });
+            if (!rightSidedDots) {
+                if (paginationItems.after.length > 4) {
+                    indFnd = $('.page-item').length - 2;
+                    // $(`<li class="page-item disabled" aria-disabled="true"><span class="page-link">${totalRecords}</span></li>`).insertAfter($('.page-item:eq(' + indFnd + ')'));
+                    // $(`<li class="page-item disabled" aria-disabled="true"><span class="page-link">...</span></li>`).insertAfter($('.page-item:eq(' + indFnd + ')'));
+                }
+            }
+        }
+    }
+}
